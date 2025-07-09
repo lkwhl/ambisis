@@ -32,36 +32,38 @@ export default function EmpresasPage() {
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <>
       <Breadcrumb />
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Empresas</h1>
-        <button
-          onClick={handleNovaEmpresa}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-        >
-          Nova Empresa
-        </button>
-      </div>
-
-      {empresas.length === 0 ? (
-        <p className="text-gray-500">Nenhuma empresa cadastrada.</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {empresas.map((empresa) => (
-            <Card
-              key={empresa.id}
-              title={empresa.razaoSocial}
-              onClick={() => handleEditar(empresa.id)}
-            >
-              <p className="text-sm text-gray-600">CNPJ: {empresa.cnpj}</p>
-              <p className="text-sm text-gray-600">
-                {empresa.cidade} - {empresa.estado}
-              </p>
-            </Card>
-          ))}
+      <div className="p-6 max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+          <h1 className="text-2xl font-bold text-gray-800">Empresas</h1>
+          <button
+            onClick={handleNovaEmpresa}
+            className="bg-gradient-to-tr from-[#5e72e4] to-[#825ee4] text-white px-5 py-2 rounded-lg shadow hover:brightness-105 transition"
+          >
+            Nova Empresa
+          </button>
         </div>
-      )}
-    </div>
+
+        {empresas.length === 0 ? (
+          <p className="text-gray-500">Nenhuma empresa cadastrada.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            {empresas.map((empresa) => (
+              <Card
+                key={empresa.id}
+                title={empresa.razaoSocial}
+                onClick={() => handleEditar(empresa.id)}
+              >
+                <p className="text-sm text-gray-600">CNPJ: {empresa.cnpj}</p>
+                <p className="text-sm text-gray-600">
+                  {empresa.cidade} - {empresa.estado}
+                </p>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   );
 }

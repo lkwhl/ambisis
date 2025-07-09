@@ -23,12 +23,13 @@ export default function NovaEmpresaPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    // Máscara simples de CNPJ
     const formatted = name === 'cnpj'
-      ? value.replace(/\D/g, '').replace(/^(\d{2})(\d)/, '$1.$2')
-              .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
-              .replace(/\.(\d{3})(\d)/, '.$1/$2')
-              .replace(/(\d{4})(\d)/, '$1-$2').slice(0, 18)
+      ? value.replace(/\D/g, '')
+          .replace(/^(\d{2})(\d)/, '$1.$2')
+          .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+          .replace(/\.(\d{3})(\d)/, '.$1/$2')
+          .replace(/(\d{4})(\d)/, '$1-$2')
+          .slice(0, 18)
       : value;
 
     setForm((prev) => ({ ...prev, [name]: formatted }));
@@ -78,37 +79,65 @@ export default function NovaEmpresaPage() {
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <>
       <Breadcrumb />
-      <h1 className="text-2xl font-bold mb-6">Cadastrar Empresa</h1>
+      <div className="p-6 max-w-4xl mx-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-gray-800">Cadastrar Empresa</h1>
+          <button
+            onClick={() => router.back()}
+            className="text-sm text-gray-500 hover:underline"
+          >
+            Voltar
+          </button>
+        </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {['razaoSocial', 'cnpj', 'cep', 'cidade', 'estado', 'bairro', 'complemento'].map((campo) => (
-          <div key={campo}>
-            <label className="block font-medium capitalize">{campo}</label>
-            <input
-              type="text"
-              name={campo}
-              value={(form as any)[campo]}
-              onChange={handleChange}
-              onBlur={campo === 'cep' ? handleCepBlur : undefined}
-              className="w-full border border-gray-300 rounded px-3 py-2"
-              required={['razaoSocial', 'cnpj', 'cep'].includes(campo)}
-              disabled={['cidade', 'estado', 'bairro'].includes(campo)}
-            />
-          </div>
-        ))}
-
-        {erro && <p className="text-red-600">{erro}</p>}
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-xl shadow-md"
         >
-          {loading ? 'Salvando...' : 'Salvar'}
-        </button>
-      </form>
-    </div>
+          {[
+            'razaoSocial',
+            'cnpj',
+            'cep',
+            'cidade',
+            'estado',
+            'bairro',
+            'complemento',
+          ].map((campo) => (
+            <div key={campo} className="col-span-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
+                {campo}
+                {['razaoSocial', 'cnpj', 'cep'].includes(campo) && (
+                  <span className="text-red-500 ml-1">*</span>
+                )}
+              </label>
+              <input
+                type="text"
+                name={campo}
+                value={(form as any)[campo]}
+                onChange={handleChange}
+                onBlur={campo === 'cep' ? handleCepBlur : undefined}
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                required={['razaoSocial', 'cnpj', 'cep'].includes(campo)}
+                disabled={['cidade', 'estado', 'bairro'].includes(campo)}
+              />
+            </div>
+          ))}
+
+          {erro && <p className="col-span-2 text-red-600">{erro}</p>}
+
+          <div className="col-span-2 flex justify-end">
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-[var(--primary)] text-white px-6 py-2 rounded-md shadow hover:brightness-110 transition"
+            >
+              {loading ? 'Salvando...' : 'Salvar'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
   );
 }

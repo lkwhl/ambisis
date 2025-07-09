@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Breadcrumb from "@/components/Breadcrumb";
-import Card from "@/components/Card";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Breadcrumb from '@/components/Breadcrumb';
+import Card from '@/components/Card';
 
 type Licenca = {
   id: number;
@@ -25,66 +25,68 @@ export default function LicencasPage() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch("/api/licencas")
+    fetch('/api/licencas')
       .then((res) => res.json())
       .then(setLicencas);
-    fetch("/api/empresas")
+    fetch('/api/empresas')
       .then((res) => res.json())
       .then(setEmpresas);
   }, []);
 
   const getEmpresaNome = (id: number) =>
-    empresas.find((e) => e.id === id)?.razaoSocial || "Desconhecida";
+    empresas.find((e) => e.id === id)?.razaoSocial || 'Desconhecida';
 
   const handleNovaLicenca = () => {
-    router.push("/dashboard/licencas/nova");
+    router.push('/dashboard/licencas/nova');
   };
 
   const handleEditar = (id: number) => {
-    router.push(`/dashboard/licencas/${id}/editar`);
+    router.push(`/dashboard/licencas/${id}`);
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <>
       <Breadcrumb />
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Licenças</h1>
-        <button
-          onClick={handleNovaLicenca}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-        >
-          Nova Licença
-        </button>
-      </div>
-
-      {licencas.length === 0 ? (
-        <p className="text-gray-500">Nenhuma licença cadastrada.</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {licencas.map((licenca) => (
-            <Card
-              key={licenca.id}
-              title={licenca.numero}
-              onClick={() => handleEditar(licenca.id)}
-            >
-              <p className="text-sm text-gray-600">
-                <strong>Empresa:</strong> {getEmpresaNome(licenca.empresaId)}
-              </p>
-              <p className="text-sm text-gray-600">
-                <strong>Órgão:</strong> {licenca.orgaoAmbiental}
-              </p>
-              <p className="text-sm text-gray-600">
-                <strong>Emissão:</strong>{" "}
-                {new Date(licenca.emissao).toLocaleDateString()}
-              </p>
-              <p className="text-sm text-gray-600">
-                <strong>Validade:</strong>{" "}
-                {new Date(licenca.validade).toLocaleDateString()}
-              </p>
-            </Card>
-          ))}
+      <div className="p-6 max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+          <h1 className="text-2xl font-bold text-gray-800">Licenças</h1>
+          <button
+            onClick={handleNovaLicenca}
+            className="bg-gradient-to-tr from-[#5e72e4] to-[#825ee4] text-white px-5 py-2 rounded-lg shadow hover:brightness-105 transition"
+          >
+            Nova Licença
+          </button>
         </div>
-      )}
-    </div>
+
+        {licencas.length === 0 ? (
+          <p className="text-gray-500">Nenhuma licença cadastrada.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            {licencas.map((licenca) => (
+              <Card
+                key={licenca.id}
+                title={licenca.numero}
+                onClick={() => handleEditar(licenca.id)}
+              >
+                <p className="text-sm text-gray-600">
+                  <strong>Empresa:</strong> {getEmpresaNome(licenca.empresaId)}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Órgão:</strong> {licenca.orgaoAmbiental}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Emissão:</strong>{' '}
+                  {new Date(licenca.emissao).toLocaleDateString()}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Validade:</strong>{' '}
+                  {new Date(licenca.validade).toLocaleDateString()}
+                </p>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   );
 }
