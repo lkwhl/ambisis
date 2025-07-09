@@ -1,42 +1,44 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
+import toast from "react-hot-toast";
 
 export default function NovaEmpresaPage() {
   const router = useRouter();
 
   const [form, setForm] = useState({
-    razaoSocial: '',
-    cnpj: '',
-    cep: '',
-    cidade: '',
-    estado: '',
-    bairro: '',
-    complemento: '',
+    razaoSocial: "",
+    cnpj: "",
+    cep: "",
+    cidade: "",
+    estado: "",
+    bairro: "",
+    complemento: "",
   });
 
   const [loading, setLoading] = useState(false);
-  const [erro, setErro] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    const formatted = name === 'cnpj'
-      ? value.replace(/\D/g, '')
-          .replace(/^(\d{2})(\d)/, '$1.$2')
-          .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
-          .replace(/\.(\d{3})(\d)/, '.$1/$2')
-          .replace(/(\d{4})(\d)/, '$1-$2')
-          .slice(0, 18)
-      : value;
+    const formatted =
+      name === "cnpj"
+        ? value
+            .replace(/\D/g, "")
+            .replace(/^(\d{2})(\d)/, "$1.$2")
+            .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+            .replace(/\.(\d{3})(\d)/, ".$1/$2")
+            .replace(/(\d{4})(\d)/, "$1-$2")
+            .slice(0, 18)
+        : value;
 
     setForm((prev) => ({ ...prev, [name]: formatted }));
   };
 
   const handleCepBlur = async () => {
-    const cep = form.cep.replace(/\D/g, '');
+    const cep = form.cep.replace(/\D/g, "");
     if (cep.length !== 8) return;
 
     try {
@@ -46,33 +48,33 @@ export default function NovaEmpresaPage() {
       if (!data.erro) {
         setForm((prev) => ({
           ...prev,
-          cidade: data.localidade || '',
-          estado: data.uf || '',
-          bairro: data.bairro || '',
+          cidade: data.localidade || "",
+          estado: data.uf || "",
+          bairro: data.bairro || "",
         }));
       } else {
-        setErro('CEP não encontrado');
+        toast.error("CEP não encontrado");
       }
     } catch {
-      setErro('Erro ao buscar CEP');
+      toast.error("Erro ao buscar CEP");
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setErro('');
 
-    const res = await fetch('/api/empresas', {
-      method: 'POST',
+    const res = await fetch("/api/empresas", {
+      method: "POST",
       body: JSON.stringify(form),
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
 
     if (res.ok) {
-      router.push('/dashboard/empresas');
+      toast.success("Empresa criada com sucesso");
+      router.push("/dashboard/empresas");
     } else {
-      setErro('Erro ao criar empresa');
+      toast.error("Erro ao criar empresa");
     }
 
     setLoading(false);
@@ -83,7 +85,9 @@ export default function NovaEmpresaPage() {
       <Breadcrumb />
       <div className="p-6 max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Cadastrar Empresa</h1>
+          <h1 className="text-2xl font-bold text-gray-800">
+            Cadastrar Empresa
+          </h1>
           <button
             onClick={() => router.back()}
             className="text-sm text-gray-500 hover:underline"
@@ -97,18 +101,18 @@ export default function NovaEmpresaPage() {
           className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-xl shadow-md"
         >
           {[
-            'razaoSocial',
-            'cnpj',
-            'cep',
-            'cidade',
-            'estado',
-            'bairro',
-            'complemento',
+            "razaoSocial",
+            "cnpj",
+            "cep",
+            "cidade",
+            "estado",
+            "bairro",
+            "complemento",
           ].map((campo) => (
             <div key={campo} className="col-span-1">
               <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
                 {campo}
-                {['razaoSocial', 'cnpj', 'cep'].includes(campo) && (
+                {["razaoSocial", "cnpj", "cep"].includes(campo) && (
                   <span className="text-red-500 ml-1">*</span>
                 )}
               </label>
@@ -117,15 +121,15 @@ export default function NovaEmpresaPage() {
                 name={campo}
                 value={(form as any)[campo]}
                 onChange={handleChange}
-                onBlur={campo === 'cep' ? handleCepBlur : undefined}
+                onBlur={campo === "cep" ? handleCepBlur : undefined}
+                minLength={campo === "cep" ? 8 : 0}
+                maxLength={campo === "cep" ? 8 : 255}
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
-                required={['razaoSocial', 'cnpj', 'cep'].includes(campo)}
-                disabled={['cidade', 'estado', 'bairro'].includes(campo)}
+                required={["razaoSocial", "cnpj", "cep"].includes(campo)}
+                disabled={["cidade", "estado", "bairro"].includes(campo)}
               />
             </div>
           ))}
-
-          {erro && <p className="col-span-2 text-red-600">{erro}</p>}
 
           <div className="col-span-2 flex justify-end">
             <button
@@ -133,7 +137,7 @@ export default function NovaEmpresaPage() {
               disabled={loading}
               className="bg-[var(--primary)] text-white px-6 py-2 rounded-md shadow hover:brightness-110 transition"
             >
-              {loading ? 'Salvando...' : 'Salvar'}
+              {loading ? "Salvando..." : "Salvar"}
             </button>
           </div>
         </form>

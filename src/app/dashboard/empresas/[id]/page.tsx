@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
+import toast from "react-hot-toast";
 
 export default function EditarEmpresaPage() {
   const { id } = useParams();
@@ -20,7 +21,6 @@ export default function EditarEmpresaPage() {
 
   const [licencas, setLicencas] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [erro, setErro] = useState("");
 
   useEffect(() => {
     if (!id) return;
@@ -71,16 +71,15 @@ export default function EditarEmpresaPage() {
           bairro: data.bairro || "",
         }));
       } else {
-        setErro("CEP não encontrado");
+        toast.error("CEP não encontrado");
       }
     } catch {
-      setErro("Erro ao buscar CEP");
+      toast.error("Erro ao buscar CEP");
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErro("");
 
     const res = await fetch(`/api/empresas/${id}`, {
       method: "PUT",
@@ -89,9 +88,10 @@ export default function EditarEmpresaPage() {
     });
 
     if (res.ok) {
+      toast.success("Empresa atualizada com sucesso");
       router.push("/dashboard/empresas");
     } else {
-      setErro("Erro ao atualizar empresa");
+      toast.error("Erro ao atualizar empresa");
     }
   };
 
@@ -156,8 +156,6 @@ export default function EditarEmpresaPage() {
               />
             </div>
           ))}
-
-          {erro && <p className="col-span-2 text-red-600">{erro}</p>}
 
           <div className="col-span-2 flex justify-end">
             <button

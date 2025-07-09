@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
+import toast from "react-hot-toast";
 
 export default function EditarLicencaPage() {
   const { id } = useParams();
@@ -19,7 +20,6 @@ export default function EditarLicencaPage() {
 
   const [empresaAtualId, setEmpresaAtualId] = useState<string>("");
 
-  const [erro, setErro] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -54,7 +54,6 @@ export default function EditarLicencaPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErro("");
 
     const res = await fetch(`/api/licencas/${id}`, {
       method: "PUT",
@@ -63,9 +62,10 @@ export default function EditarLicencaPage() {
     });
 
     if (res.ok) {
-      router.push(`/dashboard/empresas/${form.empresaId}`);
+      toast.success("Licença atualizada com sucesso");
+      router.push(`/dashboard/licencas`);
     } else {
-      setErro("Erro ao atualizar licença");
+      toast.error("Erro ao atualizar licença");
     }
   };
 
@@ -170,8 +170,6 @@ export default function EditarLicencaPage() {
               className="w-full border border-gray-300 rounded-lg px-4 py-2"
             />
           </div>
-
-          {erro && <p className="col-span-2 text-red-600">{erro}</p>}
 
           <div className="col-span-2 flex justify-end">
             <button
