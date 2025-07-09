@@ -21,7 +21,7 @@ Este projeto foi desenvolvido como parte do processo seletivo da Ambisis e tem o
 
 ```bash
 git clone https://github.com/lkwhl/ambisis.git
-cd seu-repositorio
+cd ambisis
 ```
 
 ### 2. Copiar variáveis de ambiente
@@ -83,4 +83,4 @@ docker-compose.yml    ← Banco de dados MySQL containerizado
 
 ## 🧑‍💻 Autor
 
-Desenvolvido como parte de um processo seletivo Full Stack (Next.js + Drizzle + MySQL).
+Lucas Kühl dos Santos
