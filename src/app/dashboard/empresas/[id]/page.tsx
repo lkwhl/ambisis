@@ -99,7 +99,8 @@ export default function EditarEmpresaPage() {
       toast.success("Empresa atualizada com sucesso");
       router.push("/dashboard/empresas");
     } else {
-      toast.error("Erro ao atualizar empresa");
+      const data = await res.json();
+      toast.error(data?.error || "Erro ao atualizar empresa");
     }
   };
 

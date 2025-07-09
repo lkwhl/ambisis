@@ -66,7 +66,8 @@ export default function EditarLicencaPage() {
       toast.success("Licença atualizada com sucesso");
       router.push(`/dashboard/licencas`);
     } else {
-      toast.error("Erro ao atualizar licença");
+      const data = await res.json();
+      toast.error(data?.error || "Erro ao atualizar licença");
     }
   };
 

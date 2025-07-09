@@ -75,7 +75,8 @@ export default function NovaEmpresaPage() {
       toast.success("Empresa criada com sucesso");
       router.push("/dashboard/empresas");
     } else {
-      toast.error("Erro ao criar empresa");
+      const data = await res.json();
+      toast.error(data?.error || "Erro ao criar empresa");
     }
 
     setLoading(false);
