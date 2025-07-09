@@ -64,20 +64,6 @@ Este projeto está preparado para rodar em produção com Docker.
 docker build -t ambisis-app .
 ```
 
-### 2. Rodar a aplicação em produção
-
-```bash
-docker run -d \
-  --name ambisis-app \
-  --env-file .env \
-  -p 3000:3000 \
-  ambisis-app
-```
-
-A aplicação estará acessível em: [http://localhost:3000](http://localhost:3000)
-
-> **Importante:** Certifique-se de que o container do banco MySQL está rodando (`docker-compose up -d`) e que a variável `DATABASE_URL` está apontando corretamente para ele.
-
 ---
 
 ## ✅ Scripts úteis
