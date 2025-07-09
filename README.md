@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Projeto CRUD - Empresas e Licenças Ambientais
 
-## Getting Started
+Este projeto foi desenvolvido como parte do processo seletivo da Ambisis e tem o objetivo de atender os requisitos informados.
 
-First, run the development server:
+---
+
+## 🚀 Tecnologias Utilizadas
+
+- [Next.js](https://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Drizzle ORM](https://orm.drizzle.team/)
+- [MySQL](https://www.mysql.com/)
+- [Docker](https://www.docker.com/)
+
+---
+
+## ⚙️ Setup do Projeto
+
+### 1. Clonar o repositório
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/lkwhl/ambisis.git
+cd seu-repositorio
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Copiar variáveis de ambiente
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cp .env.example .env
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🐳 Subir o banco de dados com Docker + rodar migrations + iniciar o projeto
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Subir o container MySQL
+docker-compose up -d
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Instalar dependências do projeto
+npm install
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Rodar as migrations (Drizzle ORM)
+npx drizzle-kit push
 
-## Deploy on Vercel
+# Iniciar o projeto Next.js em modo desenvolvimento
+npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Acesse: [http://localhost:3000](http://localhost:3000)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## ✅ Scripts úteis
+
+```bash
+# Subir o banco de dados
+docker-compose up -d
+
+# Derrubar o banco de dados e apagar dados
+docker-compose down -v
+
+# Aplicar as migrations
+npx drizzle-kit push
+
+# Rodar o projeto
+npm run dev
+```
+
+---
+
+## 📁 Estrutura importante
+
+```
+.env                  ← Variáveis de ambiente
+drizzle.config.ts     ← Configuração do Drizzle ORM
+src/db/schema.ts      ← Definição das tabelas
+docker-compose.yml    ← Banco de dados MySQL containerizado
+```
+
+---
+
+## 🧑‍💻 Autor
+
+Desenvolvido como parte de um processo seletivo Full Stack (Next.js + Drizzle + MySQL).
