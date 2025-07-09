@@ -20,6 +20,7 @@ export default function NovaEmpresaPage() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [cepValido, setCepValido] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -40,6 +41,14 @@ export default function NovaEmpresaPage() {
 
   const handleCepBlur = async () => {
     const cep = form.cep.replace(/\D/g, "");
+
+    setForm((prev) => ({
+      ...prev,
+      cidade: "",
+      estado: "",
+      bairro: "",
+    }));
+
     if (cep.length !== 8) return;
 
     try {
@@ -47,6 +56,7 @@ export default function NovaEmpresaPage() {
       const data = await res.json();
 
       if (!data.erro) {
+        setCepValido(true);
         setForm((prev) => ({
           ...prev,
           cidade: data.localidade || "",
@@ -65,6 +75,11 @@ export default function NovaEmpresaPage() {
     e.preventDefault();
     setLoading(true);
 
+    if (!cepValido) {
+      toast.error("Informe um CEP válido");
+      setLoading(false);
+      return;
+    }
     const res = await fetch("/api/empresas", {
       method: "POST",
       body: JSON.stringify(form),
@@ -128,7 +143,7 @@ export default function NovaEmpresaPage() {
                 maxLength={campo === "cep" ? 8 : 255}
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
                 required={["razaoSocial", "cnpj", "cep"].includes(campo)}
-                disabled={["cidade", "estado", "bairro"].includes(campo)}
+                readOnly={["cidade", "estado", "bairro"].includes(campo)}
               />
             </div>
           ))}

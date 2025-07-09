@@ -54,6 +54,10 @@ export default function EditarLicencaPage() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const empresaVinculada = empresas.find(
+    (e) => e.id.toString() === empresaAtualId
+  );
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -65,6 +69,13 @@ export default function EditarLicencaPage() {
 
     if (res.ok) {
       toast.success("Licença atualizada com sucesso");
+      if (empresaVinculada && typeof window !== "undefined") {
+        const veioEmpresa =
+          new URLSearchParams(window.location.search).get("from") === "empresa";
+        if (veioEmpresa) {
+          return router.push(`/dashboard/empresas/${empresaVinculada.id}`);
+        }
+      }
       router.push(`/dashboard/licencas`);
     } else {
       const data = await res.json();
@@ -80,15 +91,16 @@ export default function EditarLicencaPage() {
     const res = await fetch(`/api/licencas/${id}`, { method: "DELETE" });
     if (res.ok) {
       toast.success("Licença excluída com sucesso");
+      const from = new URLSearchParams(window.location.search).get("from");
+      if (from === "empresa" && empresaVinculada) {
+        return router.push(`/dashboard/empresas/${empresaVinculada.id}`);
+      }
+
       router.push("/dashboard/licencas");
     } else {
       toast.error("Erro ao excluir licença");
     }
   };
-
-  const empresaVinculada = empresas.find(
-    (e) => e.id.toString() === empresaAtualId
-  );
 
   if (loading) return <Loading title="Carregando Licença" />;
 

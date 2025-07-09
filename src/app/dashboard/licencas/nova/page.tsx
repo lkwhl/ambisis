@@ -47,7 +47,11 @@ export default function NovaLicencaPage() {
 
     if (res.ok) {
       toast.success("Licença criada com sucesso");
-      router.push(`/dashboard/licencas`);
+      if (empresaIdQuery) {
+        router.push(`/dashboard/empresas/${empresaIdQuery}`);
+      } else {
+        router.push(`/dashboard/licencas`);
+      }
     } else {
       const data = await res.json();
       toast.error(data?.error || "Erro ao criar licença");

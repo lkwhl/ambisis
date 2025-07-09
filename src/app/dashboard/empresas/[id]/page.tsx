@@ -27,6 +27,7 @@ export default function EditarEmpresaPage() {
   const [modalTipo, setModalTipo] = useState<"empresa" | "licenca" | null>(
     null
   );
+  const [cepValido, setCepValido] = useState(false);
   const [licencaIdParaExcluir, setLicencaIdParaExcluir] = useState<
     number | null
   >(null);
@@ -36,7 +37,11 @@ export default function EditarEmpresaPage() {
 
     fetch(`/api/empresas/${id}`)
       .then((res) => res.json())
-      .then((empresa) => setForm(empresa));
+      .then((empresa) => setForm(empresa))
+      .finally(() => {
+        setLoading(false);
+        setCepValido(true);
+      });
 
     fetch(`/api/licencas`)
       .then((res) => res.json())
@@ -46,8 +51,6 @@ export default function EditarEmpresaPage() {
         );
         setLicencas(filtradas);
       });
-
-    setLoading(false);
   }, [id]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,12 +70,22 @@ export default function EditarEmpresaPage() {
 
   const handleCepBlur = async () => {
     const cep = form.cep.replace(/\D/g, "");
+    setCepValido(false);
+    setForm((prev) => ({
+      ...prev,
+      cidade: "",
+      estado: "",
+      bairro: "",
+    }));
+
     if (cep.length !== 8) return;
 
     try {
       const res = await fetch(`https://viacep.com.br/ws/${cep}/json`);
       const data = await res.json();
+
       if (!data.erro) {
+        setCepValido(true);
         setForm((prev) => ({
           ...prev,
           cidade: data.localidade || "",
@@ -89,6 +102,12 @@ export default function EditarEmpresaPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!cepValido) {
+      toast.error("Informe um CEP válido");
+      setLoading(false);
+      return;
+    }
 
     const res = await fetch(`/api/empresas/${id}`, {
       method: "PUT",
@@ -142,11 +161,11 @@ export default function EditarEmpresaPage() {
   };
 
   const handleNovaLicenca = () => {
-    router.push(`/dashboard/licencas/nova?empresaId=${id}`);
+    router.push(`/dashboard/licencas/nova?empresaId=${id}&from=empresa`);
   };
 
   const handleEditarLicenca = (licencaId: number) => {
-    router.push(`/dashboard/licencas/${licencaId}`);
+    router.push(`/dashboard/licencas/${licencaId}?from=empresa`);
   };
 
   if (loading) return <Loading title="Carregando Empresa" />;
@@ -193,9 +212,11 @@ export default function EditarEmpresaPage() {
                 value={(form as any)[campo]}
                 onChange={handleChange}
                 onBlur={campo === "cep" ? handleCepBlur : undefined}
+                minLength={campo === "cep" ? 8 : 0}
+                maxLength={campo === "cep" ? 8 : 255}
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
                 required={["razaoSocial", "cnpj", "cep"].includes(campo)}
-                disabled={["cidade", "estado", "bairro"].includes(campo)}
+                readOnly={["cidade", "estado", "bairro"].includes(campo)}
               />
             </div>
           ))}
