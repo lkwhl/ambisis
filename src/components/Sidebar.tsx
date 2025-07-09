@@ -68,12 +68,7 @@ export default function Sidebar() {
       {mobileOpen && (
         <div className="fixed inset-0 z-40 flex md:hidden">
           <div className="w-64 bg-white h-full shadow-md flex flex-col justify-between overflow-y-auto">
-            <div>
-              <div className="flex items-center justify-center py-6 border-b">
-                <span className="text-xl font-bold text-[#5e72e4]">
-                  Ambisis
-                </span>
-              </div>
+            <div className="mt-14">
               <nav className="flex-1">
                 <ul>
                   {navItems.map((item) => {
@@ -82,7 +77,7 @@ export default function Sidebar() {
                       <li key={item.href}>
                         <Link
                           href={item.href}
-                          className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all
+                          className={`flex items-center px-4 py-4 rounded-lg text-md font-medium transition-all
                       ${
                         active
                           ? "bg-gradient-to-tr from-[#5e72e4] to-[#825ee4] !text-white shadow-md"

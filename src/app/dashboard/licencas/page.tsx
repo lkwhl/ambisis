@@ -47,12 +47,14 @@ export default function LicencasPage() {
   return (
     <>
       <Breadcrumb />
-      <div className="p-6 max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-          <h1 className="text-2xl font-bold text-gray-800">Licenças</h1>
+      <div className="px-4 sm:px-6 py-6 max-w-6xl mx-auto">
+        <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-800">
+            Licenças
+          </h1>
           <button
             onClick={handleNovaLicenca}
-            className="bg-gradient-to-tr from-[#5e72e4] to-[#825ee4] text-white px-5 py-2 rounded-lg shadow hover:brightness-105 transition"
+            className="bg-gradient-to-tr from-[#5e72e4] to-[#825ee4] text-white px-5 py-3 text-sm rounded-lg shadow hover:brightness-105 transition"
           >
             Nova Licença
           </button>
@@ -61,24 +63,24 @@ export default function LicencasPage() {
         {licencas.length === 0 ? (
           <p className="text-gray-500">Nenhuma licença cadastrada.</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {licencas.map((licenca) => (
               <Card
                 key={licenca.id}
                 title={licenca.numero}
                 onClick={() => handleEditar(licenca.id)}
               >
-                <p className="text-sm text-gray-600">
+                <p className="text-sm sm:text-base text-gray-600">
                   <strong>Empresa:</strong> {getEmpresaNome(licenca.empresaId)}
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm sm:text-base text-gray-600">
                   <strong>Órgão:</strong> {licenca.orgaoAmbiental}
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm sm:text-base text-gray-600">
                   <strong>Emissão:</strong>{' '}
                   {new Date(licenca.emissao).toLocaleDateString()}
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm sm:text-base text-gray-600">
                   <strong>Validade:</strong>{' '}
                   {new Date(licenca.validade).toLocaleDateString()}
                 </p>

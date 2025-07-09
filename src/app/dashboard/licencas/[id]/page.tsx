@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
 import toast from "react-hot-toast";
+import { ArrowLeft } from "lucide-react";
 
 export default function EditarLicencaPage() {
   const { id } = useParams();
@@ -92,24 +93,25 @@ export default function EditarLicencaPage() {
   return (
     <>
       <Breadcrumb />
-      <div className="p-6 max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
+      <div className="px-4 sm:px-0 py-2 max-w-4xl mx-auto w-full">
+        <div className="flex items-center justify-between mb-4 sm:mb-6 px-4 sm:px-0">
           <h1 className="text-2xl font-bold text-gray-800">
             Editar Licença Ambiental
           </h1>
           <button
             onClick={() => router.back()}
-            className="text-sm text-gray-500 hover:underline"
+            className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 transition"
           >
-            Voltar
+            <ArrowLeft className="w-5 h-5" />
+            <span className="hidden sm:inline">Voltar</span>
           </button>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-xl shadow-md"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 bg-white p-4 sm:p-6 rounded-xl shadow-md"
         >
-          <div className="col-span-2">
+          <div className="col-span-1 sm:col-span-2">
             <label className="block mb-1 text-sm font-medium text-gray-700">
               Empresa <span className="text-red-500">*</span>
             </label>
@@ -129,8 +131,8 @@ export default function EditarLicencaPage() {
             </select>
           </div>
 
-          <div className="col-span-2">
-            <label className="block text-sm font-medium text-gray-700">
+          <div className="col-span-1 sm:col-span-2">
+            <label className="block mb-1 text-sm font-medium text-gray-700">
               Número da Licença
             </label>
             <input
@@ -143,8 +145,8 @@ export default function EditarLicencaPage() {
             />
           </div>
 
-          <div className="col-span-2">
-            <label className="block text-sm font-medium text-gray-700">
+          <div className="col-span-1 sm:col-span-2">
+            <label className="block mb-1 text-sm font-medium text-gray-700">
               Órgão Ambiental
             </label>
             <input
@@ -158,7 +160,7 @@ export default function EditarLicencaPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block mb-1 text-sm font-medium text-gray-700">
               Emissão
             </label>
             <input
@@ -172,7 +174,7 @@ export default function EditarLicencaPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block mb-1 text-sm font-medium text-gray-700">
               Validade
             </label>
             <input
@@ -185,18 +187,17 @@ export default function EditarLicencaPage() {
             />
           </div>
 
-          <div className="col-span-2 flex justify-end gap-4">
+          <div className="col-span-1 sm:col-span-2 flex flex-col-reverse sm:flex-row justify-end gap-4 mt-2">
             <button
               type="button"
               onClick={handleExcluirLicenca}
-              className="bg-red-600 text-white px-6 py-2 rounded-md shadow hover:bg-red-700"
+              className="bg-red-600 text-white px-6 py-2 rounded-md shadow hover:bg-red-700 w-full sm:w-auto"
             >
-              Excluir Empresa
+              Excluir Licença
             </button>
-
             <button
               type="submit"
-              className="bg-[var(--primary)] text-white px-6 py-2 rounded-md shadow hover:bg-[var(--gray)]"
+              className="bg-[var(--primary)] text-white px-6 py-2 rounded-md shadow hover:brightness-110 w-full sm:w-auto"
             >
               Salvar Alterações
             </button>
@@ -230,7 +231,7 @@ export default function EditarLicencaPage() {
           </div>
         )}
 
-        <div className="mt-10">
+        <div className="mt-10 px-4 sm:px-0">
           <h2 className="text-lg font-semibold text-gray-800 mb-2">
             Empresa Vinculada
           </h2>
