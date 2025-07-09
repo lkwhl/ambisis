@@ -145,8 +145,8 @@ export default function EditarEmpresaPage() {
             {licencas.map((l) => (
               <li
                 key={l.id}
-                onClick={() => router.push(`/dashboard/licencas/${l.id}/editar`)}
-                className="border p-3 rounded hover:bg-gray-50 cursor-pointer"
+                onClick={() => router.push(`/dashboard/licencas/${l.id}`)}
+                className="border p-3 rounded hover:bg-gray-500 cursor-pointer"
               >
                 <p><strong>Número:</strong> {l.numero}</p>
                 <p><strong>Órgão:</strong> {l.orgaoAmbiental}</p>
