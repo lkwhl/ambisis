@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
 import toast from "react-hot-toast";
 import { ArrowLeft } from "lucide-react";
+import { EmpresaForm } from "@/types";
+
 
 export default function NovaEmpresaPage() {
   const router = useRouter();
@@ -136,7 +138,7 @@ export default function NovaEmpresaPage() {
               <input
                 type="text"
                 name={campo}
-                value={(form as any)[campo]}
+                value={(form as EmpresaForm)[campo]}
                 onChange={handleChange}
                 onBlur={campo === "cep" ? handleCepBlur : undefined}
                 minLength={campo === "cep" ? 8 : 0}

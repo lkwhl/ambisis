@@ -3,7 +3,6 @@ import { empresas } from "@/db/schema";
 import { eq, and, ne } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
-// ✅ Corrigido: desestrutura diretamente `params`
 export async function GET(
   _req: Request,
   { params }: { params: { id: string } }

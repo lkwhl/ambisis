@@ -26,7 +26,7 @@ export default function Breadcrumb() {
     };
 
     fetchData();
-  }, [pathname]);
+  }, [pathname, parts]);
 
   return (
     <nav className="text-sm text-gray-600 mb-4 sm:mb-6 px-4 sm:px-0 block">

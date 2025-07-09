@@ -5,13 +5,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
 import toast from "react-hot-toast";
 import { ArrowLeft } from "lucide-react";
+import { Empresa } from "@/types";
 
 export default function NovaLicencaPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const empresaIdQuery = searchParams.get("empresaId");
 
-  const [empresas, setEmpresas] = useState<any[]>([]);
+  const [empresas, setEmpresas] = useState<Empresa[]>([]);
   const [form, setForm] = useState({
     empresaId: empresaIdQuery || "",
     numero: "",

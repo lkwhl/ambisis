@@ -6,6 +6,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import toast from "react-hot-toast";
 import { ArrowLeft } from "lucide-react";
 import Loading from "@/components/Loading";
+import { Licenca, EmpresaForm } from "@/types";
 
 export default function EditarEmpresaPage() {
   const { id } = useParams();
@@ -21,7 +22,7 @@ export default function EditarEmpresaPage() {
     complemento: "",
   });
 
-  const [licencas, setLicencas] = useState<any[]>([]);
+  const [licencas, setLicencas] = useState<Licenca[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalTipo, setModalTipo] = useState<"empresa" | "licenca" | null>(
@@ -47,7 +48,7 @@ export default function EditarEmpresaPage() {
       .then((res) => res.json())
       .then((todasLicencas) => {
         const filtradas = todasLicencas.filter(
-          (l: any) => l.empresaId === Number(id)
+          (l: Licenca) => l.empresaId === Number(id)
         );
         setLicencas(filtradas);
       });
@@ -209,7 +210,7 @@ export default function EditarEmpresaPage() {
               <input
                 type="text"
                 name={campo}
-                value={(form as any)[campo]}
+                value={(form as EmpresaForm)[campo]}
                 onChange={handleChange}
                 onBlur={campo === "cep" ? handleCepBlur : undefined}
                 minLength={campo === "cep" ? 8 : 0}

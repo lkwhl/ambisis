@@ -6,12 +6,13 @@ import Breadcrumb from "@/components/Breadcrumb";
 import toast from "react-hot-toast";
 import { ArrowLeft } from "lucide-react";
 import Loading from "@/components/Loading";
+import { Empresa } from "@/types";
 
 export default function EditarLicencaPage() {
   const { id } = useParams();
   const router = useRouter();
 
-  const [empresas, setEmpresas] = useState<any[]>([]);
+  const [empresas, setEmpresas] = useState<Empresa[]>([]);
   const [form, setForm] = useState({
     empresaId: "",
     numero: "",
