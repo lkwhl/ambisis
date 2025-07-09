@@ -27,7 +27,7 @@ cd ambisis
 ### 2. Copiar variáveis de ambiente
 
 ```bash
-cp .env.example .env
+cp .env-example .env
 ```
 
 ---
