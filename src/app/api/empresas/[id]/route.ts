@@ -3,11 +3,12 @@ import { empresas } from "@/db/schema";
 import { eq, and, ne } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
+// ✅ Corrigido: desestrutura diretamente `params`
 export async function GET(
   _req: Request,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const id = Number(context.params.id);
+  const id = Number(params.id);
 
   if (isNaN(id)) {
     return NextResponse.json({ error: "ID inválido" }, { status: 400 });
@@ -19,9 +20,10 @@ export async function GET(
 
 export async function PUT(
   req: Request,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const id = Number(context.params.id);
+  const id = Number(params.id);
+
   if (isNaN(id)) {
     return NextResponse.json({ error: "ID inválido" }, { status: 400 });
   }
@@ -59,7 +61,7 @@ export async function PUT(
       cidade,
       estado,
       bairro,
-      complemento
+      complemento,
     })
     .where(eq(empresas.id, id));
 
@@ -68,9 +70,9 @@ export async function PUT(
 
 export async function DELETE(
   _req: Request,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const id = Number(context.params.id);
+  const id = Number(params.id);
 
   if (isNaN(id)) {
     return NextResponse.json({ error: "ID inválido" }, { status: 400 });

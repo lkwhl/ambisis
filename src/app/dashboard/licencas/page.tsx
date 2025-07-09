@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Breadcrumb from '@/components/Breadcrumb';
-import Card from '@/components/Card';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Breadcrumb from "@/components/Breadcrumb";
+import Card from "@/components/Card";
+import Loading from "@/components/Loading";
 
 type Licenca = {
   id: number;
@@ -22,27 +23,32 @@ type Empresa = {
 export default function LicencasPage() {
   const [licencas, setLicencas] = useState<Licenca[]>([]);
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    fetch('/api/licencas')
+    setLoading(true);
+    fetch("/api/licencas")
       .then((res) => res.json())
       .then(setLicencas);
-    fetch('/api/empresas')
+    fetch("/api/empresas")
       .then((res) => res.json())
-      .then(setEmpresas);
+      .then(setEmpresas)
+      .finally(() => setLoading(false));
   }, []);
 
   const getEmpresaNome = (id: number) =>
-    empresas.find((e) => e.id === id)?.razaoSocial || 'Desconhecida';
+    empresas.find((e) => e.id === id)?.razaoSocial || "Desconhecida";
 
   const handleNovaLicenca = () => {
-    router.push('/dashboard/licencas/nova');
+    router.push("/dashboard/licencas/nova");
   };
 
   const handleEditar = (id: number) => {
     router.push(`/dashboard/licencas/${id}`);
   };
+
+  if (loading) return <Loading title="Carregando Licenças" />;
 
   return (
     <>
@@ -77,11 +83,11 @@ export default function LicencasPage() {
                   <strong>Órgão:</strong> {licenca.orgaoAmbiental}
                 </p>
                 <p className="text-sm sm:text-base text-gray-600">
-                  <strong>Emissão:</strong>{' '}
+                  <strong>Emissão:</strong>{" "}
                   {new Date(licenca.emissao).toLocaleDateString()}
                 </p>
                 <p className="text-sm sm:text-base text-gray-600">
-                  <strong>Validade:</strong>{' '}
+                  <strong>Validade:</strong>{" "}
                   {new Date(licenca.validade).toLocaleDateString()}
                 </p>
               </Card>

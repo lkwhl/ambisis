@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
 import toast from "react-hot-toast";
 import { ArrowLeft } from "lucide-react";
+import Loading from "@/components/Loading";
 
 export default function EditarLicencaPage() {
   const { id } = useParams();
@@ -89,7 +90,7 @@ export default function EditarLicencaPage() {
     (e) => e.id.toString() === empresaAtualId
   );
 
-  if (loading) return <p className="p-6">Carregando licença...</p>;
+  if (loading) return <Loading title="Carregando Licença" />;
 
   return (
     <>

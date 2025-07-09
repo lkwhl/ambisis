@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
 import Card from "@/components/Card";
+import Loading from "@/components/Loading";
 
 type Empresa = {
   id: number;
@@ -16,11 +17,14 @@ type Empresa = {
 export default function EmpresasPage() {
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     fetch("/api/empresas")
       .then((res) => res.json())
-      .then(setEmpresas);
+      .then((data) => setEmpresas(data))
+      .finally(() => setLoading(false));
   }, []);
 
   const handleNovaEmpresa = () => {
@@ -30,6 +34,8 @@ export default function EmpresasPage() {
   const handleEditar = (id: number) => {
     router.push(`/dashboard/empresas/${id}`);
   };
+
+  if (loading) return <Loading title="Carregando Empresas" />;
 
   return (
     <>
