@@ -19,7 +19,7 @@ export default function EditarLicencaPage() {
   });
 
   const [empresaAtualId, setEmpresaAtualId] = useState<string>("");
-
+  const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -66,6 +66,20 @@ export default function EditarLicencaPage() {
       router.push(`/dashboard/licencas`);
     } else {
       toast.error("Erro ao atualizar licença");
+    }
+  };
+
+  const handleExcluirLicenca = () => {
+    setModalVisible(true);
+  };
+
+  const confirmarExclusao = async () => {
+    const res = await fetch(`/api/licencas/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      toast.success("Licença excluída com sucesso");
+      router.push("/dashboard/licencas");
+    } else {
+      toast.error("Erro ao excluir licença");
     }
   };
 
@@ -171,7 +185,15 @@ export default function EditarLicencaPage() {
             />
           </div>
 
-          <div className="col-span-2 flex justify-end">
+          <div className="col-span-2 flex justify-end gap-4">
+            <button
+              type="button"
+              onClick={handleExcluirLicenca}
+              className="bg-red-600 text-white px-6 py-2 rounded-md shadow hover:bg-red-700"
+            >
+              Excluir Empresa
+            </button>
+
             <button
               type="submit"
               className="bg-[var(--primary)] text-white px-6 py-2 rounded-md shadow hover:bg-[var(--gray)]"
@@ -180,6 +202,33 @@ export default function EditarLicencaPage() {
             </button>
           </div>
         </form>
+
+        {modalVisible && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm">
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                Tem certeza que deseja excluir esta licença?
+              </h2>
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => setModalVisible(false)}
+                  className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-sm rounded"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={async () => {
+                    setModalVisible(false);
+                    await confirmarExclusao();
+                  }}
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded"
+                >
+                  Excluir
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="mt-10">
           <h2 className="text-lg font-semibold text-gray-800 mb-2">

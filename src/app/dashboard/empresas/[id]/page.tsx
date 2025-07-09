@@ -21,6 +21,13 @@ export default function EditarEmpresaPage() {
 
   const [licencas, setLicencas] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalTipo, setModalTipo] = useState<"empresa" | "licenca" | null>(
+    null
+  );
+  const [licencaIdParaExcluir, setLicencaIdParaExcluir] = useState<
+    number | null
+  >(null);
 
   useEffect(() => {
     if (!id) return;
@@ -95,17 +102,48 @@ export default function EditarEmpresaPage() {
     }
   };
 
+  const handleExcluirEmpresa = () => {
+    setModalTipo("empresa");
+    setModalVisible(true);
+  };
+
+  const handleDeletarLicenca = (id: number) => {
+    setModalTipo("licenca");
+    setLicencaIdParaExcluir(id);
+    setModalVisible(true);
+  };
+
+  const handleConfirmExcluirEmpresa = async () => {
+    const res = await fetch(`/api/empresas/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      toast.success("Empresa excluída com sucesso");
+      router.push("/dashboard/empresas");
+    } else {
+      toast.error("Erro ao excluir empresa");
+    }
+  };
+
+  const handleConfirmExcluirLicenca = async () => {
+    if (!licencaIdParaExcluir) return;
+
+    const res = await fetch(`/api/licencas/${licencaIdParaExcluir}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      setLicencas((prev) => prev.filter((l) => l.id !== licencaIdParaExcluir));
+      toast.success("Licença excluída com sucesso");
+    } else {
+      toast.error("Erro ao excluir licença");
+    }
+  };
+
   const handleNovaLicenca = () => {
     router.push(`/dashboard/licencas/nova?empresaId=${id}`);
   };
 
   const handleEditarLicenca = (licencaId: number) => {
     router.push(`/dashboard/licencas/${licencaId}`);
-  };
-
-  const handleDeletarLicenca = async (licencaId: number) => {
-    await fetch(`/api/licencas/${licencaId}`, { method: "DELETE" });
-    setLicencas((prev) => prev.filter((l) => l.id !== licencaId));
   };
 
   if (loading) return <p className="p-6">Carregando...</p>;
@@ -157,15 +195,55 @@ export default function EditarEmpresaPage() {
             </div>
           ))}
 
-          <div className="col-span-2 flex justify-end">
+          <div className="col-span-2 flex justify-end gap-4">
+            <button
+              type="button"
+              onClick={handleExcluirEmpresa}
+              className="bg-red-600 text-white px-6 py-2 rounded-md shadow hover:bg-red-700"
+            >
+              Excluir Empresa
+            </button>
+
             <button
               type="submit"
-              className=" bg-[var(--primary)] text-white px-6 py-2 rounded-md shadow hover:bg-[var(--gray)]"
+              className="bg-[var(--primary)] text-white px-6 py-2 rounded-md shadow hover:bg-[var(--gray)]"
             >
               Salvar Alterações
             </button>
           </div>
         </form>
+
+        {modalVisible && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm">
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                Tem certeza que deseja excluir{" "}
+                {modalTipo === "empresa" ? "esta empresa" : "esta licença"}?
+              </h2>
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => setModalVisible(false)}
+                  className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-sm rounded"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={async () => {
+                    setModalVisible(false);
+                    if (modalTipo === "empresa") {
+                      await handleConfirmExcluirEmpresa();
+                    } else if (modalTipo === "licenca") {
+                      await handleConfirmExcluirLicenca();
+                    }
+                  }}
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded"
+                >
+                  Excluir
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="mt-10">
           <div className="flex justify-between items-center mb-4">
