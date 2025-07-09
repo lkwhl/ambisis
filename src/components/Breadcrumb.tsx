@@ -29,7 +29,7 @@ export default function Breadcrumb() {
   }, [pathname]);
 
   return (
-    <nav className="text-sm text-gray-600 mb-6">
+    <nav className="text-sm text-gray-600 mb-4 sm:mb-6 px-4 sm:px-0 block">
       <span className="text-gray-400">Home / </span>
       {parts.map((part, index) => {
         const isLast = index === parts.length - 1;

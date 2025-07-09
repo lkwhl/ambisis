@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
 import toast from "react-hot-toast";
+import { ArrowLeft } from "lucide-react";
 
 export default function EditarEmpresaPage() {
   const { id } = useParams();
@@ -151,20 +152,22 @@ export default function EditarEmpresaPage() {
   return (
     <>
       <Breadcrumb />
-      <div className="p-6 max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
+
+      <div className="px-4 sm:px-0 py-2 max-w-4xl mx-auto w-full">
+        <div className="flex items-center justify-between mb-4 sm:mb-6 px-4 sm:px-0">
           <h1 className="text-2xl font-bold text-gray-800">Editar Empresa</h1>
           <button
             onClick={() => router.back()}
-            className="text-sm text-gray-500 hover:underline"
+            className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 transition"
           >
-            Voltar
+            <ArrowLeft className="w-5 h-5" />
+            <span className="hidden sm:inline">Voltar</span>
           </button>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-xl shadow-md"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 bg-white p-4 sm:p-6 rounded-xl shadow-md"
         >
           {[
             "razaoSocial",
@@ -195,18 +198,17 @@ export default function EditarEmpresaPage() {
             </div>
           ))}
 
-          <div className="col-span-2 flex justify-end gap-4">
+          <div className="col-span-1 sm:col-span-2 flex flex-col-reverse sm:flex-row justify-end gap-4 mt-2">
             <button
               type="button"
               onClick={handleExcluirEmpresa}
-              className="bg-red-600 text-white px-6 py-2 rounded-md shadow hover:bg-red-700"
+              className="bg-red-600 text-white px-6 py-2 rounded-md shadow hover:bg-red-700 w-full sm:w-auto"
             >
               Excluir Empresa
             </button>
-
             <button
               type="submit"
-              className="bg-[var(--primary)] text-white px-6 py-2 rounded-md shadow hover:bg-[var(--gray)]"
+              className="bg-[var(--primary)] text-white px-6 py-2 rounded-md shadow hover:brightness-110 w-full sm:w-auto"
             >
               Salvar Alterações
             </button>
@@ -245,7 +247,7 @@ export default function EditarEmpresaPage() {
           </div>
         )}
 
-        <div className="mt-10">
+        <div className="mt-10 px-4 sm:px-0">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold text-gray-800">
               Licenças Ambientais
@@ -267,9 +269,9 @@ export default function EditarEmpresaPage() {
               {licencas.map((l) => (
                 <li
                   key={l.id}
-                  className="bg-gray-100 p-4 rounded-lg shadow-sm flex justify-between items-center"
+                  className="bg-gray-100 p-4 rounded-lg shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center"
                 >
-                  <div>
+                  <div className="mb-4 sm:mb-0">
                     <p className="font-semibold text-gray-800">
                       Número: <span className="text-gray-700">{l.numero}</span>
                     </p>
