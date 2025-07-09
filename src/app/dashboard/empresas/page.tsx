@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
+import Card from "@/components/Card";
 
 type Empresa = {
   id: number;
@@ -48,17 +49,16 @@ export default function EmpresasPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {empresas.map((empresa) => (
-            <div
+            <Card
               key={empresa.id}
+              title={empresa.razaoSocial}
               onClick={() => handleEditar(empresa.id)}
-              className="p-4 border border-gray-300 rounded-lg shadow-sm cursor-pointer hover:shadow-md transition"
             >
-              <h2 className="font-semibold text-lg">{empresa.razaoSocial}</h2>
               <p className="text-sm text-gray-600">CNPJ: {empresa.cnpj}</p>
               <p className="text-sm text-gray-600">
                 {empresa.cidade} - {empresa.estado}
               </p>
-            </div>
+            </Card>
           ))}
         </div>
       )}

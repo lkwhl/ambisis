@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Breadcrumb from '@/components/Breadcrumb';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Breadcrumb from "@/components/Breadcrumb";
+import Card from "@/components/Card";
 
 type Licenca = {
   id: number;
@@ -24,15 +25,19 @@ export default function LicencasPage() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch('/api/licencas').then((res) => res.json()).then(setLicencas);
-    fetch('/api/empresas').then((res) => res.json()).then(setEmpresas);
+    fetch("/api/licencas")
+      .then((res) => res.json())
+      .then(setLicencas);
+    fetch("/api/empresas")
+      .then((res) => res.json())
+      .then(setEmpresas);
   }, []);
 
   const getEmpresaNome = (id: number) =>
-    empresas.find((e) => e.id === id)?.razaoSocial || 'Desconhecida';
+    empresas.find((e) => e.id === id)?.razaoSocial || "Desconhecida";
 
   const handleNovaLicenca = () => {
-    router.push('/dashboard/licencas/nova');
+    router.push("/dashboard/licencas/nova");
   };
 
   const handleEditar = (id: number) => {
@@ -57,12 +62,11 @@ export default function LicencasPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {licencas.map((licenca) => (
-            <div
+            <Card
               key={licenca.id}
+              title={licenca.numero}
               onClick={() => handleEditar(licenca.id)}
-              className="p-4 border border-gray-300 rounded-lg shadow-sm cursor-pointer hover:shadow-md transition"
             >
-              <h2 className="font-semibold text-lg">{licenca.numero}</h2>
               <p className="text-sm text-gray-600">
                 <strong>Empresa:</strong> {getEmpresaNome(licenca.empresaId)}
               </p>
@@ -70,12 +74,14 @@ export default function LicencasPage() {
                 <strong>Órgão:</strong> {licenca.orgaoAmbiental}
               </p>
               <p className="text-sm text-gray-600">
-                <strong>Emissão:</strong> {new Date(licenca.emissao).toLocaleDateString()}
+                <strong>Emissão:</strong>{" "}
+                {new Date(licenca.emissao).toLocaleDateString()}
               </p>
               <p className="text-sm text-gray-600">
-                <strong>Validade:</strong> {new Date(licenca.validade).toLocaleDateString()}
+                <strong>Validade:</strong>{" "}
+                {new Date(licenca.validade).toLocaleDateString()}
               </p>
-            </div>
+            </Card>
           ))}
         </div>
       )}
