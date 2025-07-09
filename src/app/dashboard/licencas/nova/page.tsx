@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Breadcrumb from "@/components/Breadcrumb";
 
 export default function NovaLicencaPage() {
   const router = useRouter();
@@ -53,6 +54,7 @@ export default function NovaLicencaPage() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
+              <Breadcrumb />
       <h1 className="text-2xl font-bold mb-6">Nova Licença Ambiental</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">

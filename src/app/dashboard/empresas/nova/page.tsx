@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Breadcrumb from "@/components/Breadcrumb";
 
 export default function NovaEmpresaPage() {
   const router = useRouter();
@@ -78,6 +79,7 @@ export default function NovaEmpresaPage() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
+      <Breadcrumb />
       <h1 className="text-2xl font-bold mb-6">Cadastrar Empresa</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">

@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Breadcrumb from "@/components/Breadcrumb";
 
 type Empresa = {
   id: number;
@@ -16,13 +17,13 @@ export default function EmpresasPage() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch('/api/empresas')
+    fetch("/api/empresas")
       .then((res) => res.json())
       .then(setEmpresas);
   }, []);
 
   const handleNovaEmpresa = () => {
-    router.push('/dashboard/empresas/nova');
+    router.push("/dashboard/empresas/nova");
   };
 
   const handleEditar = (id: number) => {
@@ -31,6 +32,7 @@ export default function EmpresasPage() {
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
+      <Breadcrumb />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Empresas</h1>
         <button

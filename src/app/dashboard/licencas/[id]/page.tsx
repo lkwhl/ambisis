@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export default function EditarLicencaPage() {
   const { id } = useParams();
@@ -9,18 +10,18 @@ export default function EditarLicencaPage() {
 
   const [empresas, setEmpresas] = useState<any[]>([]);
   const [form, setForm] = useState({
-    empresaId: '',
-    numero: '',
-    orgaoAmbiental: '',
-    emissao: '',
-    validade: '',
+    empresaId: "",
+    numero: "",
+    orgaoAmbiental: "",
+    emissao: "",
+    validade: "",
   });
 
-  const [erro, setErro] = useState('');
+  const [erro, setErro] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/empresas')
+    fetch("/api/empresas")
       .then((res) => res.json())
       .then(setEmpresas);
 
@@ -40,25 +41,27 @@ export default function EditarLicencaPage() {
       });
   }, [id]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErro('');
+    setErro("");
 
     const res = await fetch(`/api/licencas/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
 
     if (res.ok) {
       router.push(`/dashboard/empresas/${form.empresaId}`);
     } else {
-      setErro('Erro ao atualizar licença');
+      setErro("Erro ao atualizar licença");
     }
   };
 
@@ -66,8 +69,8 @@ export default function EditarLicencaPage() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
+      <Breadcrumb />
       <h1 className="text-2xl font-bold mb-6">Editar Licença Ambiental</h1>
-
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block font-medium">Empresa</label>
